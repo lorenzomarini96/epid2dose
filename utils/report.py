@@ -20,31 +20,57 @@ def generate_pdf_report(
     pd_max_val=55.0,
 ):
     """
-    Generate a PDF validation report comparing the predicted Portal Dose
-    against the reference Portal Dose using gamma-index analysis.
+    Generate a PDF validation report based on gamma-index analysis.
+
+    The report compares the predicted Portal Dose distributions against the
+    corresponding reference Portal Dose images and summarizes the agreement
+    using the gamma-index (3%/3 mm criterion).
+
+    For each evaluated case, the report includes:
+
+    - the reference Portal Dose distribution;
+    - the predicted Portal Dose distribution;
+    - the gamma-index histogram;
+    - the gamma passing rate.
+
+    A final summary page reports the mean, median, minimum, and maximum
+    gamma passing rates across all evaluated cases.
 
     Parameters
     ----------
     pdf_path : str
-        Output PDF path.
+        Output path of the generated PDF report.
 
     reference_dir : str
-        Directory containing the reference Portal Dose (.txt) images.
+        Directory containing the reference Portal Dose images exported
+        from the Treatment Planning System (.txt).
 
     prediction_dir : str
-        Directory containing the predicted Portal Dose (.npy) images.
+        Directory containing the predicted Portal Dose images (.npy).
 
     epid_filenames : list[str]
-        Original EPID filenames.
+        List of EPID filenames corresponding to each evaluated case.
 
-    study_name : str
-        Study name reported in the PDF.
+    study_name : str, optional
+        Study identifier reported in the PDF header.
+        Default is ``"epid2dose"``.
 
-    pd_min_val : float
-        Minimum displayed Portal Dose.
+    pd_min_val : float, optional
+        Minimum Portal Dose value displayed in the dose maps.
+        Default is ``0.0`` cGy.
 
-    pd_max_val : float
-        Maximum displayed Portal Dose.
+    pd_max_val : float, optional
+        Maximum Portal Dose value displayed in the dose maps.
+        Default is ``55.0`` cGy.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    The gamma-index is computed using the implementation provided by
+    PyMedPhys with the default criteria adopted by the package.
     """
 
     reference_images, _ = load_reference_pd(reference_dir)

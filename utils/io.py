@@ -6,15 +6,33 @@ from utils.constants import IMAGE_SIZE
 
 def load_reference_pd(reference_dir, target_size=IMAGE_SIZE):
     """
-    Load reference Portal Dose (.txt) images and resize them.
+    Load reference Portal Dose images.
 
-    Args:
-        reference_dir (str): Directory containing the reference Portal Dose images.
-        target_size (tuple): Output image size.
+    The reference Portal Dose distributions are expected as plain-text files
+    exported from the Treatment Planning System (TPS). Each image is resized
+    to the network input resolution.
 
-    Returns:
-        images (list[np.ndarray]): Reference Portal Dose images.
-        filenames (list[str]): Corresponding filenames.
+    Parameters
+    ----------
+    reference_dir : str
+        Directory containing the reference Portal Dose (.txt) files.
+
+    target_size : tuple[int, int], optional
+        Output image size in pixels.
+        Default is (256, 256).
+
+    Returns
+    -------
+    list[np.ndarray]
+        List of resized Portal Dose images.
+
+    list[str]
+        Corresponding filenames without extension.
+
+    Raises
+    ------
+    RuntimeError
+        If one or more files cannot be loaded.
     """
 
     if not os.path.isdir(reference_dir):
@@ -51,7 +69,26 @@ def load_reference_pd(reference_dir, target_size=IMAGE_SIZE):
 
 def load_predictions(prediction_dir):
     """
-    Load predicted Portal Dose images (.npy).
+    Load predicted Portal Dose distributions.
+
+    Parameters
+    ----------
+    prediction_dir : str
+        Directory containing the predicted Portal Dose images saved as
+        NumPy (.npy) files.
+
+    Returns
+    -------
+    list[np.ndarray]
+        List of predicted Portal Dose images.
+
+    list[str]
+        Corresponding filenames without extension.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the prediction directory does not exist.
     """
 
     if not os.path.isdir(prediction_dir):

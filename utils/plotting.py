@@ -17,17 +17,57 @@ from utils.constants import (
 # =============================================================================
 
 def denormalize_epid(image):
-    """Convert normalized EPID image back to detector units."""
+    """
+    Convert a normalized EPID image back to detector signal units.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        Normalized EPID image.
+
+    Returns
+    -------
+    np.ndarray
+        EPID image expressed in detector signal units.
+    """
     return image * (EPID_MAX - EPID_MIN) + EPID_MIN
 
 
 def denormalize_pd(image):
-    """Convert normalized Portal Dose prediction back to cGy."""
+    """
+    Convert a normalized Portal Dose image back to physical dose values.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        Normalized Portal Dose image.
+
+    Returns
+    -------
+    np.ndarray
+        Portal Dose distribution expressed in cGy.
+    """
     return image * (PD_MAX - PD_MIN) + PD_MIN
 
 
 def get_extent(pixel_spacing_mm=PIXEL_SPACING):
-    """Return image extent in cm centered at the origin."""
+    """
+    Compute the image extent for visualization.
+
+    The returned extent is centred at the image origin and expressed
+    in centimetres for display with Matplotlib.
+
+    Parameters
+    ----------
+    pixel_spacing_mm : float, optional
+        Pixel spacing in millimetres.
+        Default is ``PIXEL_SPACING``.
+
+    Returns
+    -------
+    list[float]
+        Image extent in centimetres formatted for ``matplotlib.pyplot.imshow``.
+    """
 
     pixel_spacing_cm = pixel_spacing_mm / 10.0
 
@@ -52,8 +92,11 @@ def export_predictions(
     save_denormalized=True,
 ):
     """
-    Generate a PDF overview of the predictions and export the predicted
-    Portal Dose images as NumPy arrays.
+    Export Portal Dose predictions.
+
+    This function generates a PDF overview containing the input EPID images
+    and the corresponding predicted Portal Dose distributions. The predicted
+    Portal Dose images are also exported as NumPy arrays.
 
     Parameters
     ----------
@@ -67,13 +110,19 @@ def export_predictions(
         Original EPID filenames.
 
     prediction_dir : str
-        Directory where the predicted Portal Dose (.npy) files are saved.
+        Directory where the predicted Portal Dose images will be saved.
 
     pdf_path : str
-        Full path of the PDF overview.
+        Path of the generated PDF overview.
 
-    save_denormalized : bool
-        If True, predictions are saved in physical units (cGy).
+    save_denormalized : bool, optional
+        If True, predictions are exported in physical units (cGy).
+        Otherwise, normalized values are saved.
+        Default is True.
+
+    Returns
+    -------
+    None
     """
 
     os.makedirs(prediction_dir, exist_ok=True)

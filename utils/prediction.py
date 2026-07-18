@@ -29,27 +29,46 @@ def pd_prediction(
     n_folds=DEFAULT_FOLDS,
 ):
     """
-    Predict Portal Dose images from preprocessed EPID images using the
-    trained ensemble.
+    Predict Portal Dose distributions from preprocessed EPID images.
+
+    The prediction is performed using an ensemble of independently trained
+    U-Net models. For each cross-validation fold, the best checkpoint of each
+    ensemble member is automatically selected based on the lowest validation
+    mean absolute error (MAE). The final prediction is obtained by averaging
+    the outputs of all ensemble members.
 
     Parameters
     ----------
     x_test : np.ndarray
-        Preprocessed EPID images.
+        Array containing the preprocessed EPID images with shape
+        (N, 256, 256).
 
     weights_dir : str
         Directory containing the trained model weights.
 
-    best_filters : int
-        Number of filters of the U-Net architecture.
+    best_filters : int, optional
+        Number of filters in the first encoder level of the U-Net.
+        Default is ``DEFAULT_FILTERS``.
 
-    n_folds : int
-        Number of cross-validation folds.
+    n_folds : int, optional
+        Number of cross-validation folds to use during inference.
+        Default is ``DEFAULT_FOLDS``.
 
     Returns
     -------
     np.ndarray
-        Predicted Portal Dose images.
+        Predicted Portal Dose distributions with shape
+        (N, 256, 256).
+
+    Raises
+    ------
+    FileNotFoundError
+        If the required model weights cannot be found.
+
+    Notes
+    -----
+    The final prediction is computed as the average of all models belonging
+    to the selected cross-validation folds.
     """
 
     ensemble_predictions = []
@@ -104,7 +123,20 @@ def pd_prediction(
             # Select checkpoint with the lowest validation MAE
             # ---------------------------------------------------------
 
-            def extract_val_mae(filename):
+            def _extract_val_mae(filename):
+                """
+                Extract the validation MAE encoded in a weight filename.
+
+                Parameters
+                ----------
+                filename : str
+                Weight filename.
+
+                Returns
+                -------
+                float
+                    Validation MAE.
+                """
                 return float(
                     filename.split("-")[-1].replace(
                         ".weights.h5",
@@ -114,7 +146,7 @@ def pd_prediction(
 
             best_weight = min(
                 weight_files,
-                key=extract_val_mae,
+                key=_extract_val_mae,
             )
 
             best_weight_path = os.path.join(
@@ -187,8 +219,36 @@ def calculate_gamma_index(
     distance_mm_threshold=DEFAULT_GAMMA_DISTANCE,
 ):
     """
-    Compute the gamma-index map between a reference and a predicted
-    Portal Dose image.
+    Compute the two-dimensional gamma-index map.
+
+    Gamma analysis is performed using PyMedPhys according to the specified
+    dose difference and distance-to-agreement criteria.
+
+    Parameters
+    ----------
+    reference : np.ndarray
+        Reference Portal Dose distribution.
+
+    prediction : np.ndarray
+        Predicted Portal Dose distribution.
+
+    dose_percent_threshold : float, optional
+        Dose difference criterion expressed as a percentage.
+        Default is ``DEFAULT_GAMMA_DOSE``.
+
+    distance_mm_threshold : float, optional
+        Distance-to-agreement criterion in millimetres.
+        Default is ``DEFAULT_GAMMA_DISTANCE``.
+
+    Returns
+    -------
+    np.ndarray
+        Two-dimensional gamma-index map.
+
+    Notes
+    -----
+    A lower dose cutoff is applied according to
+    ``DEFAULT_GAMMA_CUTOFF``.
     """
 
     reference = np.squeeze(reference)

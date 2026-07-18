@@ -20,6 +20,16 @@ from utils.report import generate_pdf_report
 # =============================================================================
 
 def parse_arguments():
+    """
+    Parse command-line arguments.
+
+    Returns
+    -------
+    argparse.Namespace
+        Parsed command-line arguments containing the input and output
+        directories, model weights location, optional reference Portal
+        Dose directory, and report generation flag.
+    """
     parser = argparse.ArgumentParser(
         description="Predict Portal Dose images from transit EPID images."
     )
@@ -64,6 +74,23 @@ def parse_arguments():
 # =============================================================================
 
 def main():
+    """
+    Run the complete Portal Dose prediction workflow.
+
+    The workflow performs the following steps:
+
+    1. Parse command-line arguments.
+    2. Load and preprocess EPID DICOM images.
+    3. Predict Portal Dose distributions using the trained ensemble model.
+    4. Export predictions as NumPy arrays and generate a PDF overview.
+    5. Optionally compute gamma-index validation against reference Portal
+       Dose distributions and generate a validation report.
+
+    Notes
+    -----
+    This function serves as the main command-line entry point of the
+    ``epid2dose`` package.
+    """
 
     args = parse_arguments()
 
