@@ -42,3 +42,7 @@ html_theme = "furo"
 html_title = "epid2dose"
 
 html_static_path = ['_static']
+
+autodoc_mock_imports = [
+    "tensorflow",
+]
