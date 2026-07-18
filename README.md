@@ -3,6 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-FF6F00?logo=tensorflow&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
+[![Documentation Status](https://app.readthedocs.org/projects/epid2dose/badge/?version=latest)](https://epid2dose.readthedocs.io/en/latest/)
 
 **epid2dose** is an open-source deep learning framework for predicting two-dimensional **Portal Dose (PD)** distributions directly from transit **Electronic Portal Imaging Device (EPID)** images.
 
