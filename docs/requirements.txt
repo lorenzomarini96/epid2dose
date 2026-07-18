@@ -1,0 +1,9 @@
+sphinx
+furo
+sphinx-autodoc-typehints
+numpy
+matplotlib
+pydicom
+pymedphys
+fpdf2
+opencv-python
