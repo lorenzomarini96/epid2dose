@@ -29,6 +29,23 @@ The package provides:
 <img src="docs/images/workflow.png" width="850">
 </p>
 
+
+## Model architecture
+
+The prediction model is based on a U-Net convolutional neural network trained to directly estimate two-dimensional Portal Dose distributions from transit EPID images.
+
+<p align="center">
+  <img src="docs/images/architecture.png" width="750">
+</p>
+
+
+## Example prediction
+
+The following example shows an input EPID image together with the corresponding predicted Portal Dose distribution.
+
+<p align="center">
+  <img src="docs/images/prediction_example.png" width="900">
+</p>
 ---
 
 # Repository structure
@@ -204,7 +221,7 @@ output/
 The generated prediction report contains the input EPID image together with the corresponding predicted Portal Dose.
 
 <p align="center">
-<img src="docs/images/prediction_overview.png" width="900">
+<img src="docs/images/prediction_example.png" width="900">
 </p>
 
 ---
