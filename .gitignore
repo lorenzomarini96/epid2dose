@@ -216,3 +216,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# =============================================================================
+# epid2dose
+# =============================================================================
+
+# Downloaded model weights
+models/weights/cv_*/
+
+# Generated outputs
+examples/output/predictions/
+
+# macOS
+.DS_Store
+
+**/.DS_Store

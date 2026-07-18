@@ -1,0 +1,10 @@
+tensorflow==2.16.2
+numpy==1.26.4
+scipy==1.14.1
+h5py==3.12.1
+matplotlib==3.10.0
+opencv-python==4.10.0.84
+pydicom==3.0.1
+pymedphys==0.40.0
+tqdm==4.67.1
+fpdf2==2.8.7
