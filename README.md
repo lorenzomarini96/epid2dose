@@ -216,16 +216,6 @@ output/
 
 ---
 
-# Prediction overview
-
-The generated prediction report contains the input EPID image together with the corresponding predicted Portal Dose.
-
-<p align="center">
-<img src="docs/images/prediction_example.png" width="900">
-</p>
-
----
-
 # Validation report
 
 If reference Portal Dose distributions are available, the software automatically computes gamma-index analysis and generates a validation report.
